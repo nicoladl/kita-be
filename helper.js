@@ -1,15 +1,22 @@
-function getOffset(currentPage = 1, listPerPage) {
-    return (currentPage - 1) * [listPerPage];
-}
-
-function emptyOrRows(rows) {
+const normalizeData = rows => {
     if (!rows) {
-        return [];
+        return {
+            byId: {},
+            allIds: []
+        }
     }
-    return rows;
+
+    return rows.reduce((acc, row) => ({
+        ...acc,
+        byId: {
+            ...acc.byId,
+            [row.id]: row
+        },
+        allIds: [...acc.allIds, row.id]
+    }), {
+        byId: {},
+        allIds: []
+    })
 }
 
-module.exports = {
-    getOffset,
-    emptyOrRows
-}
+module.exports = { normalizeData }
